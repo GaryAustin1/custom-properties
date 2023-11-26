@@ -12,7 +12,7 @@ RLS by default allows postgres, service_role and an authenticated user with an a
 If the schema is added to the API schemas in the dashboard then a user can read their own properties but only the admin roles can modify.  
 
 Many have turned to using the app_metadata column in auth.users and the user JWT for roles and claims management.
-This was impart driven by the slow performance of RLS with table joins versus a function checking the JWT.
+This was mainly driven by the slow performance of RLS with table joins versus a function checking the JWT.
 Recent testing has shown that RLS performance of generic functions and table joins can be greatly improved.
 This repository also looks at that.  
 
