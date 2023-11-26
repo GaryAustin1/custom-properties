@@ -10,7 +10,7 @@ GRANT USAGE ON SCHEMA user_roles TO postgres, authenticated, service_role;
 CREATE TABLE user_roles.property_names (
     property_name text primary key
 );
-alter table user_roles.property_names ENABLE ROW LEVEL SECURITY;
+ALTER TABLE user_roles.property_names ENABLE ROW LEVEL SECURITY;
 
 -- Adding admin role.  Postgres,service_role and an authenticated user with this role in the roles table can manage the table.
 INSERT INTO user_roles.property_names (property_name) VALUES
@@ -32,34 +32,34 @@ GRANT ALL ON user_roles.user_properties TO postgres,service_role,authenticated; 
 -- See https://github.com/GaryAustin1/RLS-Performance for more info on performance of functions in RLS.
 
 -- Match a property
-CREATE OR REPLACE FUNCTION user_roles.user_has_property(_property text) RETURNS boolean
+CREATE FUNCTION user_roles.user_has_property(_property text) RETURNS boolean
     LANGUAGE SQL SECURITY DEFINER SET search_path = public
     AS $$
-    SELECT EXISTS (SELECT 1 FROM user_roles.user_properties WHERE user_id = auth.uid() AND property = _property);
+    select exits (select 1 from user_roles.user_properties where user_id = auth.uid() and property = _property);
 $$;
 
 -- Match any properties in array
-CREATE OR REPLACE FUNCTION user_roles.user_property_in(_properties text[]) RETURNS boolean
+CREATE FUNCTION user_roles.user_property_in(_properties text[]) RETURNS boolean
     LANGUAGE SQL SECURITY DEFINER STABLE SET search_path = public
 AS $$
-    SELECT EXISTS (SELECT 1 FROM user_roles.user_properties WHERE user_id = auth.uid() AND property = ANY (_properties));
+    select exists (select 1 from user_roles.user_properties where user_id = auth.uid() and property = any (_properties));
 $$;
 
 -- Match all properties in array
-CREATE OR REPLACE FUNCTION user_roles.user_properties_match(_properties text[]) RETURNS boolean
+CREATE FUNCTION user_roles.user_properties_match(_properties text[]) RETURNS boolean
     LANGUAGE plpgsql SECURITY DEFINER STABLE SET search_path = public
 AS $$
-    DECLARE matches int;
-    BEGIN
-    SELECT count(*) INTO matches FROM user_roles.user_properties WHERE auth.uid() = user_id AND property = ANY (_properties);
-    RETURN matches = array_length(_properties,1);
-    END;
+    declare matches int;
+    begin
+    select count(*) into matches from user_roles.user_properties where auth.uid() = user_id and property = any (_properties);
+    return matches = array_length(_properties,1);
+    end;
 $$;
 
 -- If for some reason you want the JWT and associated user object to also reflect the property(s) for the user then you can use a trigger function.
 -- The JWT will reflect the current properties after it is refreshed from the client.
 -- WARNING by default this codes sets the property type to the schema name
-create or replace function user_roles.update_to_app_metadata() returns trigger
+CREATE FUNCTION user_roles.update_to_app_metadata() returns trigger
 LANGUAGE plpgsql SECURITY DEFINER SET search_path = public
 as $$
     declare
@@ -74,7 +74,7 @@ as $$
     return new;
     end;
 $$;
-create trigger on_role_change
+CREATE TRIGGER on_role_change
   after insert or update or delete on user_roles.user_properties
   for each row execute function user_roles.update_to_app_metadata();
 
