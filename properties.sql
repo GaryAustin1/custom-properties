@@ -17,10 +17,10 @@ INSERT INTO user_roles.property_names (property_name) VALUES
     ('PropertyAdmin');
 
 CREATE TABLE user_roles.user_properties (
-                            user_id UUID,
+                            user_id UUID not null,
                             property text ,
                             constraint fk_propertyname foreign key (property) references user_roles.property_names(property_name),
-                            constraint fk_user foreign key (user_id) references auth.users(id), --  If you have a profile table you can link to that instead
+                            constraint fk_user foreign key (user_id) references auth.users(id) on delete cascade, --  If you have a profile table you can link to that instead
                             primary key (user_id,property)
 );
 ALTER TABLE user_roles.user_properties ENABLE ROW LEVEL SECURITY;
