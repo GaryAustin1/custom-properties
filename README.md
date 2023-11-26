@@ -34,7 +34,7 @@ test.sql is sample code used to test performance of this method versus the typic
 
 Early Performance data on 100k row table with select RLS allowed to a role run in the SQL editor as an authenticated user:
 
-JWT custom-claims function `(select get_my_claim('role')::text) = '"Teacher"'` -  17.6msec
+JWT custom-claims function `(select get_my_claim('role')::text) = '"Teacher"'` -  17.6msec  
 custom-properties table function `(select user_roles.user_has_property('Teacher'))` 13.3msec 
 
 Note this includes optimizations on both using guidelines for RLS on functions from : https://github.com/GaryAustin1/RLS-Performance
