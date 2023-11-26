@@ -48,5 +48,14 @@ The three RLS functions are called like:
 `USING ( (select user_roles.user_property_in('{"Teacher","Staff"}) )` {} is string format for array in Postgres  
 `USING ( (select user_roles.user_properties_match('{"Teacher","Staff"}') )` must match all roles in array  
 `USING ( (select user_roles.user_has_property('PropertyAdmin') )` default property for admin of the properties  
-  
 
+Example of roles:
+
+![img.png](img.png)
+  
+![img_1.png](img_1.png)
+
+![img_2.png](img_2.png)
+
+Foreign key property types link enforces choices:
+![img_3.png](img_3.png)
