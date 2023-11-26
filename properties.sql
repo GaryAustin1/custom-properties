@@ -35,7 +35,7 @@ GRANT ALL ON user_roles.user_properties TO postgres,service_role,authenticated; 
 CREATE FUNCTION user_roles.user_has_property(_property text) RETURNS boolean
     LANGUAGE SQL SECURITY DEFINER SET search_path = public
     AS $$
-    select exits (select 1 from user_roles.user_properties where user_id = auth.uid() and property = _property);
+    select exists (select 1 from user_roles.user_properties where user_id = auth.uid() and property = _property);
 $$;
 
 -- Match any properties in array
