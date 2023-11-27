@@ -31,34 +31,42 @@ GRANT ALL ON user_roles.user_properties TO postgres,service_role,authenticated; 
 -- They must be called like (select user_roles.user_has_property('Role')) with the outer parentheses and select or the performance will be greatly impacted.
 -- See https://github.com/GaryAustin1/RLS-Performance for more info on performance of functions in RLS.
 
--- Match a property
+-- Match a property for the current user
 CREATE FUNCTION user_roles.user_has_property(_property text) RETURNS boolean
-    LANGUAGE SQL SECURITY DEFINER SET search_path = public
+    LANGUAGE SQL SECURITY DEFINER SET search_path = user_roles,public
     AS $$
-    select exists (select 1 from user_roles.user_properties where user_id = auth.uid() and property = _property);
+    select exists (select 1 from user_properties where user_id = auth.uid() and property = _property);
 $$;
 
--- Match any properties in array
+-- Match any properties in array for the current user
 CREATE FUNCTION user_roles.user_property_in(_properties text[]) RETURNS boolean
-    LANGUAGE SQL SECURITY DEFINER STABLE SET search_path = public
+    LANGUAGE SQL SECURITY DEFINER STABLE SET search_path = user_roles,public
 AS $$
-    select exists (select 1 from user_roles.user_properties where user_id = auth.uid() and property = any (_properties));
+    select exists (select 1 from user_properties where user_id = auth.uid() and property = any (_properties));
 $$;
 
--- Match all properties in array
+-- Match all properties in array for the current user
 CREATE FUNCTION user_roles.user_properties_match(_properties text[]) RETURNS boolean
-    LANGUAGE plpgsql SECURITY DEFINER STABLE SET search_path = public
+    LANGUAGE plpgsql SECURITY DEFINER STABLE SET search_path = user_roles,public
 AS $$
     declare matches int;
     begin
-    select count(*) into matches from user_roles.user_properties where auth.uid() = user_id and property = any (_properties);
+    select count(*) into matches from user_properties where auth.uid() = user_id and property = any (_properties);
     return matches = array_length(_properties,1);
     end;
+$$;
+
+-- get all properties the current user has
+CREATE FUNCTION user_roles.get_user_properties() RETURNS text[]
+    LANGUAGE SQL SECURITY DEFINER STABLE SET search_path = user_roles,public
+AS $$
+select array_agg(property) from user_properties where user_id = auth.uid();
 $$;
 
 -- If for some reason you want the JWT and associated user object to also reflect the property(s) for the user then you can use a trigger function.
 -- The JWT will reflect the current properties after it is refreshed from the client.
 -- WARNING by default this codes sets the property type to the schema name
+-- The trigger is initially DISABLED IN THE CODE so as to not pollute the jwt.
 CREATE FUNCTION user_roles.update_to_app_metadata() returns trigger
 LANGUAGE plpgsql SECURITY DEFINER SET search_path = public
 as $$
@@ -77,6 +85,7 @@ $$;
 CREATE TRIGGER on_role_change
   after insert or update or delete on user_roles.user_properties
   for each row execute function user_roles.update_to_app_metadata();
+ALTER TABLE user_roles.user_properties DISABLE TRIGGER on_role_change; -- Enable the trigger in the Dashboard or remove this if desired
 
 -- Typical policies to protect user_properites table and allow admin of it.
 -- postgres and service role have access by default.
