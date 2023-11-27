@@ -3,7 +3,7 @@ Custom roles/teams/groups/claims using tables and a setof functions for RLS in S
 
 THIS CODE IS STILL BEING TESTED AND DEVELOPED DO NOT USE AT THIS TIME.
 
-Show a table based approach to roles/claims management. 
+First show a table based approach to roles/claims management, then group management with individual group admins. 
 Have RLS functions use the roles/claims. 
 Compare the RLS performance of using a roles table versus using a JWT custom-claims approach.  
 The concept is to have a simple property name table and user properties table for each type of property desired.
@@ -79,3 +79,10 @@ where
 Yields:
 
 ![img.png](images/img.png)
+
+
+###Custom-properties for managing groups in the works.    
+Same general idea but have the property_names table use an id for primary and fk so that group names can change.   
+Add a group_admin column in the user_properties table for individual group admin in addition to an over all group admin role.  
+Don't support app_metadata reflection as large jwt's can cause session and performance issues as well cookie size problems.
+ 
