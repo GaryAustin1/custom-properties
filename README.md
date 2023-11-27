@@ -51,7 +51,7 @@ The three RLS functions are called like:
 
 Example of roles:
 
-![img.png](images/img.png)
+![img1.png](images%2Fimg1.png)
   
 ![img_1.png](images/img_1.png)
 
@@ -62,14 +62,19 @@ Foreign key property types link enforces choices:
 
 And the real winner with just using tables for roles, groups, etc. is being able to just use table/view operations as part of joins.
 ```sql
-create view student_view with(security_invoker=true) as
+create  view
+    public.student_view as
 select
-  u.user_id,
-  ua.email
-  from user_roles.user_properties as u
-  join auth.users ua on ua.id = u.user_id
-  where u.property = 'Student';
+    u.user_id,
+    p.name,
+    ua.email
+from
+    user_roles.user_properties u
+        join profiles as p on p.user_id = u.user_id
+        join auth.users ua on ua.id = u.user_id
+where
+    u.property = 'Student'::text;
 ```
 Yields:
 
-![img_4.png](images/img_4.png)
+![img.png](images/img.png)
