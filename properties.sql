@@ -57,12 +57,15 @@ AS $$
 $$;
 
 -- get all properties the current user has
-CREATE FUNCTION user_roles.get_user_properties() RETURNS text[]
-    LANGUAGE SQL SECURITY DEFINER STABLE SET search_path = user_roles,public
-AS $$
-select array_agg(property) from user_properties where user_id = auth.uid();
-$$;
+-- called as (col = any (array(select user_roles.get_user_properties())) in RLS
 
+CREATE FUNCTION user_roles.get_user_properties() RETURNS text[]
+    LANGUAGE plpgsql SECURITY DEFINER STABLE SET search_path = user_roles,public
+AS $$
+    begin
+    return array (select property from user_properties where user_id = auth.uid());
+    end;
+$$;
 -- If for some reason you want the JWT and associated user object to also reflect the property(s) for the user then you can use a trigger function.
 -- The JWT will reflect the current properties after it is refreshed from the client.
 -- WARNING by default this codes sets the property type to the schema name
