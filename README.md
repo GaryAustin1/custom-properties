@@ -63,7 +63,7 @@ Foreign key property types link enforces choices:
 And the real winner with just using tables for roles, groups, etc. is being able to just use table/view operations as part of joins.
 ```sql
 create  view
-    public.student_view as
+    public.student_view with (security_invoker = true) as
 select
     u.user_id,
     p.name,
