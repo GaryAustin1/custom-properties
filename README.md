@@ -60,7 +60,7 @@ Example of roles:
 Foreign key property types link enforces choices:
 ![img_3.png](img_3.png)
 
-And the real winner with just using tables for roles, groups, etc. is being able to just user table/view operations as part of joins.
+And the real winner with just using tables for roles, groups, etc. is being able to just use table/view operations as part of joins.
 ```sql
 create view student_view with(security_invoker=true) as
 select
