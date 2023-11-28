@@ -86,3 +86,4 @@ Same general idea but have the property_names table use an id for primary and fk
 Add a group_admin column in the user_properties table for individual group admin in addition to an over all group admin role.  
 Don't support app_metadata reflection as large jwt's can cause session and performance issues as well cookie size problems.
  
+![imgg1.png](images/imgg1.png)
