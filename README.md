@@ -1,7 +1,7 @@
 # custom-properties
 Custom roles/teams/groups/claims using tables and a setof functions for RLS in Supabase environment.
 
-THIS CODE IS STILL BEING TESTED AND DEVELOPED DO NOT USE AT THIS TIME.
+THIS CODE IS STILL BEING TESTED AND DEVELOPED.  Roles code is in OK shape.  Groups is still in the works.
 
 First show a table based approach to roles/claims management, then group management with individual group admins. 
 Have RLS functions use the roles/claims. 
