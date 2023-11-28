@@ -39,8 +39,45 @@ INSERT INTO user_roles.user_properties (user_id,property) VALUES
  ('679e25e3-5402-4c9f-87b3-793af97540ae'::UUID,'Student'),
  ('722498ac-0a23-4f94-b3c6-bed52f1d7f3d'::UUID,'Dean');
 
--- add teacher role to app metadata (to do)
+DROP TABLE IF EXISTS user_profiles;
+CREATE TABLE user_profiles (
+    user_id UUID,
+    name text,
+    email text,
+    age int2
+);
+INSERT INTO user_profiles (user_id,name,email,age) VALUES
+  ('d7124d4a-22e7-49d7-87a4-55ad09cd5783'::UUID,'Dave Jennings','djenning@fabercollege.org',40),
+  ('c8fc722a-22fb-4483-aab7-6c2be88bc03c'::UUID,'John "Bluto" Blutarsky','jbb@deltahouse.org',32),
+  ('2eaa730d-bbb0-478c-bde6-d51890e8bd28'::UUID,'Eric "Otter" Stratton','eos@deltahouse.org',23),
+  ('679e25e3-5402-4c9f-87b3-793af97540ae'::UUID,'Kent "Flounder" Dorfman','kfd@deltahouse.org',24),
+  ('722498ac-0a23-4f94-b3c6-bed52f1d7f3d'::UUID,'Vernon Wormer','vwormer@fabercollege.org',50);
+-- demo view
+create  view
+    public.student_view with (security_invoker = true) as
+select
+    u.user_id,
+    u.property,
+    p.name,
+    p.email
+from
+    user_roles.user_properties u
+        join user_profiles as p on p.user_id = u.user_id
+where
+        u.property = 'Student'::text;
 
+create  view
+    public.college_staff_view with (security_invoker = true) as
+select
+    u.user_id,
+    u.property,
+    p.name,
+    p.email
+from
+    user_roles.user_properties u
+        join user_profiles as p on p.user_id = u.user_id
+where
+        u.property =any ('{"Dean","Teacher"}');
 -- generate a custom_claims function for checking role.
 CREATE OR REPLACE FUNCTION get_my_claim(claim TEXT) RETURNS "jsonb"
     LANGUAGE "sql" STABLE

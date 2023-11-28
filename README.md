@@ -67,18 +67,35 @@ create  view
     public.student_view with (security_invoker = true) as
 select
     u.user_id,
+    u.property,
     p.name,
-    ua.email
+    p.email
 from
     user_roles.user_properties u
-        join profiles as p on p.user_id = u.user_id
-        join auth.users ua on ua.id = u.user_id
+        join user_profiles as p on p.user_id = u.user_id
 where
     u.property = 'Student'::text;
 ```
 Yields:
+![students.png](images%2Fstudents.png)
 
-![img.png](images/img.png)
+And:
+```sql
+create  view
+    public.college_staff_view with (security_invoker = true) as
+select
+    u.user_id,
+    u.property,
+    p.name,
+    p.email
+from
+    user_roles.user_properties u
+        join user_profiles as p on p.user_id = u.user_id
+where
+        u.property =any ('{"Dean","Teacher"}');
+```
+Gives:
+![staff.png](images%2Fstaff.png)
 
 
 ###Custom-properties for managing groups in the works.    
