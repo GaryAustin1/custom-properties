@@ -5,7 +5,9 @@ THIS CODE IS STILL BEING TESTED AND DEVELOPED.  Roles code is in OK shape.  Grou
 
 First show a table based approach to roles/claims management, then group management with individual group admins. 
 Have RLS functions use the roles/claims. 
-Compare the RLS performance of using a roles table versus using a JWT custom-claims approach.  
+
+Compare the RLS performance of using a roles table versus using a JWT custom-claims approach.  See [Performance](https://github.com/GaryAustin1/custom-properties/blob/f8f110d6bec448661fcfc6345eb4c0ebed0ad254/Performance.md)
+
 The concept is to have a simple property name table and user properties table for each type of property desired.
 All management of user properites is done thru standard table management of the user property table.
 RLS by default allows postgres, service_role and an authenticated user with an admin property in the table to manage the user properties.
