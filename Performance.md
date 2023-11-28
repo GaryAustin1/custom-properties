@@ -25,7 +25,7 @@ custom-properties table RLS of versus JWT with get_my_claim in auth.app_metadata
 |(select user_roles.user_has_property('Teacher'))|133|315|
 |(select get_my_claim('role')::text) = '"Teacher"'|166|290|
 
-###1M rows with 900k for role Student, 100K for Teacher and 1000 for Dean   
+### 1M rows with 900k for role Student, 100K for Teacher and 1000 for Dean   
 Only has a user with 1 role and change the role for each test.        
 I would not recommend this method using jwt if over 10 roles per user.    
 NO INDEXING on for_role column.   
