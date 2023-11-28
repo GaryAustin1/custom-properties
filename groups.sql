@@ -1,4 +1,5 @@
 -- Right now the schema is hard coded to user_groups....
+-- NOT MUCH OF THIS IS TESTED YET!!!!!!!!!!!!!!!
 -- This is very similar to properties but uses id's to allow changing names and individual group admin flag.
 
 DROP SCHEMA IF EXISTS user_groups cascade;
