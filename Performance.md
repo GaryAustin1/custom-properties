@@ -9,7 +9,7 @@ Note the test.sql is just various tables,policies and jwt claims code for doing 
 It is not a complete packaged test suit.  
 See https://github.com/GaryAustin1/RLS-Performance for better performance analysis with improved RLS methods used here.  
 
-###100k rows
+### 100k rows
 custom-properties table RLS of versus JWT with get_my_claim in auth.app_metadata.  
 
 |RLS| SQL | REST API |
@@ -17,7 +17,7 @@ custom-properties table RLS of versus JWT with get_my_claim in auth.app_metadata
 |(select user_roles.user_has_property('Teacher'))| 13  | 30 |
 |(select get_my_claim('role')::text) = '"Teacher"'| 17  | 29|
 
-###1M rows
+### 1M rows
 custom-properties table RLS of versus JWT with get_my_claim in auth.app_metadata.  
 
 |RLS|SQL|REST API|
