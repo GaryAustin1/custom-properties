@@ -47,7 +47,7 @@ Without those optimizations and just calling the functions you get 208msec and 1
 The RLS functions are called like:
 
 `USING ( (select user_roles.user_has_property('Teacher') )`  
-`USING ( (select user_roles.user_property_in('{"Teacher","Staff"}) )` {} is string format for array in Postgres  
+`USING ( (select user_roles.user_property_in('{"Teacher","Staff"}') )` {} is string format for array in Postgres  
 `USING ( (select user_roles.user_properties_match('{"Teacher","Staff"}') )` must match all roles in array  
 `USING ( role_column = any (array(select user_roles.get_user_properties())) )` if user has over 1000 properties performance should be studied  
 `USING ( (select user_roles.user_has_property('PropertyAdmin') )` default property for admin of the properties  

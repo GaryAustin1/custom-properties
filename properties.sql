@@ -6,13 +6,13 @@ DROP SCHEMA IF EXISTS user_roles cascade;
 CREATE SCHEMA user_roles;
 GRANT USAGE ON SCHEMA user_roles TO postgres, authenticated, service_role;
 
--- This table is just used to enforce a set of names for roles.  It is a more flexible approach than Postgres enums.
+-- This table is just used to enforce a set of names for properties.  It is a more flexible approach than Postgres enums.
 CREATE TABLE user_roles.property_names (
     property_name text primary key
 );
 ALTER TABLE user_roles.property_names ENABLE ROW LEVEL SECURITY;
 
--- Adding admin role.  Postgres,service_role and an authenticated user with this role in the roles table can manage the table.
+-- Adding admin role.  Postgres,service_role and an authenticated user with this property in the properties table can manage the table.
 INSERT INTO user_roles.property_names (property_name) VALUES
     ('PropertyAdmin');
 
@@ -85,10 +85,10 @@ as $$
     return new;
     end;
 $$;
-CREATE TRIGGER on_role_change
+CREATE TRIGGER on_property_change
   after insert or update or delete on user_roles.user_properties
   for each row execute function user_roles.update_to_app_metadata();
-ALTER TABLE user_roles.user_properties DISABLE TRIGGER on_role_change; -- Enable the trigger in the Dashboard or remove this if desired
+ALTER TABLE user_roles.user_properties DISABLE TRIGGER on_property_change; -- Enable the trigger in the Dashboard or remove this if desired
 
 -- Typical policies to protect user_properites table and allow admin of it.
 -- postgres and service role have access by default.
@@ -98,7 +98,7 @@ CREATE policy "User can read own rows"
     FOR select
     TO authenticated
     USING (auth.uid()=user_id);
-CREATE policy "Role Admin can do all operations"
+CREATE policy "PropertyAdmin can do all operations"
     ON user_roles.user_properties
     FOR all
     TO authenticated
