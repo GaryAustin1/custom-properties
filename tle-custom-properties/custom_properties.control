@@ -1,0 +1,4 @@
+# custom_properties extension
+comment = 'custom_properties.'
+default_version = '0.0.1'
+superuser = false

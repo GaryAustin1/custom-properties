@@ -1,5 +1,4 @@
 ### TLE for custom-properties
-NOT AVAILABLE YET
 
 You can use the TLE install method to install custom-properties.  
 You need to run the SQL here to install the TLE installer: [dbdev](https://supabase.github.io/dbdev/install-in-db-client/)  
@@ -19,8 +18,8 @@ The TLE will assign basic grants to service_role, authenticated and postgres rol
 
 Next install the TLE using the SQL editor:
 ```sql
-select dbdev.install('garyaustin-custom-properties');
-create extension "garyaustin-custom-properties"
+select dbdev.install('garyaustin-custom_properties');
+create extension "garyaustin-custom_properties"
     schema user_roles
     version '0.0.1';
 ```

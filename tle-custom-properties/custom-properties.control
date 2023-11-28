@@ -1,4 +1,0 @@
-# custom-properties extension
-comment = 'custom-properties.'
-default_version = '0.0.1'
-superuser = false
