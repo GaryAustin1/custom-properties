@@ -104,6 +104,6 @@ update auth.users set raw_app_meta_data =
 
 set session role authenticated;
 set request.jwt.claims to '{"role":"authenticated", "sub":"c8fc722a-22fb-4483-aab7-6c2be88bc03c", "app_metadata":{"role":"Student"}}';
-explain analyze SELECT * FROM test_posts;
---select get_my_claim('role')::text;
+--explain analyze SELECT * FROM test_posts;
+select get_my_claim('role')->>'role';
 set session role postgres;

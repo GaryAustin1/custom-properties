@@ -44,7 +44,7 @@ for_role = (select get_my_claim('role')->>0)
 ### 100k rows  without RLS tuning
 This is why jwt method became popular.  
 
-|RLS| SQL  | REST API |
-|--|------|----------|
-|select user_roles.user_has_property('Teacher')| 1874 | 3005     |
-|select get_my_claim('role')::text = '"Teacher"'| 195  | 1158     |
+| RLS                                      | SQL  | REST API |
+|------------------------------------------|------|----------|
+| user_roles.user_has_property('Teacher')  | 1874 | 3005     |
+| get_my_claim('role')::text = '"Teacher"' | 195  | 1158     |
