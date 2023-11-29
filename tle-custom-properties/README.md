@@ -1,8 +1,9 @@
 ### TLE for custom-properties
 
+Please see https://github.com/GaryAustin1/custom-properties for more info.
+
 You can use the TLE install method to install custom-properties.  
 You need to run the SQL here to install the TLE installer: [dbdev](https://supabase.github.io/dbdev/install-in-db-client/)  
-
 Once you have the installer loaded:
 
 Create a custom schema to load a copy of custom-properties into.   

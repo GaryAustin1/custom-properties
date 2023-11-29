@@ -9,7 +9,7 @@ Have RLS functions use the roles/claims.
 Compare the RLS performance of using a roles table versus using a JWT custom-claims approach.  See [Performance](https://github.com/GaryAustin1/custom-properties/blob/f8f110d6bec448661fcfc6345eb4c0ebed0ad254/Performance.md)
 
 The concept is to have a simple property name table and user properties table for each type of property desired.
-All management of user properites is done thru standard table management of the user properties table.
+All management of user properties is done thru standard table management of the user properties table.
 RLS by default allows postgres, service_role and an authenticated user with an admin property in the table to manage the user properties.
 If the schema is added to the API schemas in the dashboard then a user can read their own properties but only the admin roles can modify.  
 
