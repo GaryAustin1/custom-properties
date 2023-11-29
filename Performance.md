@@ -2,7 +2,7 @@
 
 Run on a Supabase free instance.
 100k and 1M row table protected with various RLS.  
-All times in Msec
+All times in Msec.  SQL simulates an authenticated user in SQL.  REST API is supabase-js call.  
 
 See the test.sql for some info on table and tests.
 Note the test.sql is just various tables,policies and jwt claims code for doing a variety of tests.
