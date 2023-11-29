@@ -1,4 +1,4 @@
 # custom_properties extension
 comment = 'custom_properties.'
-default_version = '0.0.2'
+default_version = '0.0.3'
 superuser = false

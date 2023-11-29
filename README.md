@@ -23,7 +23,7 @@ A roles/claims table also has the advantage of easier admin using direct table m
 It also allows changes in claims and roles to immediately take effect versus waiting for the JWT to refresh  
 
 The initial approach here uses a meaningful schema name for the type of property being used.
-This is in part because the goal is to make this a TLE in dbdev.
+This is in part because the goal is to make this a TLE in dbdev.  
 One could certainly rename the functions and tables as desired instead of using a schema name.  
 
 If it is desired to automatically populate properties this can be done with a typical auth.users
@@ -32,11 +32,12 @@ trigger function on user creation by just inserting desired user/property pairs 
 The code also has an optional trigger function that will update Supabase app_metadata on any change to the user's properties in the user property table.
 This json object will be named after the schema name in the current version.  
 
-properties.sql is the main code to set up a property in schema.  Right now this is hard coded to user_roles schema.
-test.sql is sample code used to test performance of this method versus the typical custom-claims method which uses claims in the JWT as the RLS test.  
-The TLE directory has a simple to install extension for Supabase platforms.
+properties.sql is the main code to set up a property in schema.  Right now this is hard coded to user_roles schema.  
+roles.sql is a version with hard coded function and table names using 'role'.  Can be installed in public schema.  
+test.sql is sample code used to test performance of this method versus the typical custom-claims method which uses claims in the JWT as the RLS test.    
+There are two TLE directories for a custom-properties and custom-roles version of this repository.  These are available from https://database.dev/.
 
-The RLS functions are called like:
+The RLS functions are called like (note the examples here are from custom-properties installed in the user_roles schema):
 
 `USING ( (select user_roles.user_has_property('Teacher') )`  
 `USING ( (select user_roles.user_property_in('{"Teacher","Staff"}') )` {} is string format for array in Postgres  

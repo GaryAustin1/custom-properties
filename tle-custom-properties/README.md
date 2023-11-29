@@ -7,8 +7,8 @@ You need to run the SQL here to install the TLE installer: [dbdev](https://supab
 Once you have the installer loaded:
 
 Create a custom schema to load a copy of custom-properties into.   
-Note this extension name should be meaningful like `roles`, `user_roles`, `custom_teams`, etc.  
-The extension name will be used to call functions from RLS and as the name for the property in the app_metadata jwt if you decide to use that.  
+Note this schema name should be meaningful like `roles`, `user_roles`, `custom_teams`, etc.  
+The schema name will be used to call functions from RLS and as the name for the property in the app_metadata jwt if you decide to use that.  
 
 In the SQL editor:
 ```sql
@@ -34,7 +34,7 @@ user_has_property('Teacher') - returns boolean
 user_property_in('{"Teacher","Staff"}') - returns boolean - {} is string format for array in Postgres  
 user_properties_match('{"Teacher","Staff"}') - returns boolean - must match all roles in array  
 get_user_properties() - returns array - if user has over 1000 properties performance should be studied    
-update_to_app_metadata() - trigger function - updates app_metadata with an array of properteis for user  
+update_to_app_metadata() - trigger function - updates app_metadata with an array of properties for user  
 
 Check the main readme for more info on how to add policies to your tables.  
 You MUST use the example methods for calling the functions to have performant results.  
