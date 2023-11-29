@@ -45,7 +45,7 @@ The RLS functions are called like (note the examples here are from custom-proper
 `USING ( role_column = any (array(select user_roles.get_user_properties())) )` if user has over 1000 properties performance should be studied  
 `USING ( (select user_roles.user_has_property('PropertyAdmin') )` default property for admin of the properties  
 
-It is CRITICAL to call them with the format shown to get fast performance.
+It is CRITICAL TO CALL THEM IN THE FORMAT SHOWN to get fast performance.  The wrapping with parenthesis and select: `(select function())`.  
 
 Example of roles:
 

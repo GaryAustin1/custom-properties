@@ -28,7 +28,8 @@ get_user_roles() - returns array - if user has over 1000 roles performance shoul
 custom_roles_update_to_app_metadata() - trigger function - updates app_metadata with an array of roles for user
 
 Check the main readme for more info on how to add policies to your tables.  
-You MUST use the example methods for calling the functions to have performant results.
+You MUST use the example methods in the main respository for calling the functions to have performant results.   
+As an example in an RLS policy you need to wrap the functions with parenthesis and select like `(select user_has_role('Teacher'))`.  
 
 If you want your user JWTs updated with your role data, please enable the trigger custom_role_change.  
 This can be done in the UI or with SQL.
