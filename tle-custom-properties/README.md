@@ -28,7 +28,7 @@ Two tables will be created in the schema.
 property_names -- Has a property admin "role" added.  Add your property names in the table UI or with SQL inserts.  
 user_properties -- You insert user UUID, property_name pairs into this table for one or more properties per user.  
 
-Four functions will be created in the schema.  
+Five functions will be created in the schema.  
 user_has_property('Teacher') - returns boolean   
 user_property_in('{"Teacher","Staff"}') - returns boolean - {} is string format for array in Postgres  
 user_properties_match('{"Teacher","Staff"}') - returns boolean - must match all roles in array  
@@ -42,10 +42,12 @@ If you want your user JWTs updated with your property data, please enable the tr
 This can be done in the UI or with SQL.
 
 All management of your properties is done with standard table selects/inserts/updates/deletes and views.  
-The user_property table can only be updated by postgres, service_role and an authenticated user with the PropertyAdmin property.  
+The user_properties table can only be updated by postgres, service_role and an authenticated user with the PropertyAdmin property.  
 Authenticated users can only read their own properties.  
-If you desire to access or manage the properties from the API you need to use the Dashboard and goto API settings.  
+If you desire to access or manage the properties from the API you need to use the Dashboard and goto API settings.
 Add your new schema to make it available thru the API.  
+
+
 
 
 

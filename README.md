@@ -3,13 +3,13 @@ Custom roles/teams/groups/claims using tables and a setof functions for RLS in S
 
 THIS CODE IS STILL BEING TESTED AND DEVELOPED.  Roles code is in OK shape.  Groups is still in the works.
 
-First show a table based approach to roles/claims management, then group management with individual group admins. 
+The goals:
+Show a table based approach to roles/claims management, then group management with individual group admins.  
 Have RLS functions use the roles/claims. 
-
 Compare the RLS performance of using a roles table versus using a JWT custom-claims approach.  See [Performance](https://github.com/GaryAustin1/custom-properties/blob/f8f110d6bec448661fcfc6345eb4c0ebed0ad254/Performance.md)
 
 The concept is to have a simple property name table and user properties table for each type of property desired.
-All management of user properites is done thru standard table management of the user property table.
+All management of user properites is done thru standard table management of the user properties table.
 RLS by default allows postgres, service_role and an authenticated user with an admin property in the table to manage the user properties.
 If the schema is added to the API schemas in the dashboard then a user can read their own properties but only the admin roles can modify.  
 
@@ -32,17 +32,9 @@ trigger function on user creation by just inserting desired user/property pairs 
 The code also has an optional trigger function that will update Supabase app_metadata on any change to the user's properties in the user property table.
 This json object will be named after the schema name in the current version.  
 
-properties is the main code to set up a property in schema.  Right now this is hard coded to user_roles schema.
+properties.sql is the main code to set up a property in schema.  Right now this is hard coded to user_roles schema.
 test.sql is sample code used to test performance of this method versus the typical custom-claims method which uses claims in the JWT as the RLS test.  
-
-Early Performance data on 100k row table with select RLS allowed to a role run in the SQL editor as an authenticated user:
-
-JWT custom-claims function `(select get_my_claim('role')::text) = '"Teacher"'` -  17.6msec  
-custom-properties table function `(select user_roles.user_has_property('Teacher'))` 13.3msec 
-
-Note this includes optimizations on both using guidelines for RLS on functions from : https://github.com/GaryAustin1/RLS-Performance
-Without those optimizations and just calling the functions you get 208msec and 1800msec respectively.
-
+The TLE directory has a simple to install extension for Supabase platforms.
 
 The RLS functions are called like:
 
@@ -51,6 +43,8 @@ The RLS functions are called like:
 `USING ( (select user_roles.user_properties_match('{"Teacher","Staff"}') )` must match all roles in array  
 `USING ( role_column = any (array(select user_roles.get_user_properties())) )` if user has over 1000 properties performance should be studied  
 `USING ( (select user_roles.user_has_property('PropertyAdmin') )` default property for admin of the properties  
+
+It is CRITICAL to call them with the format shown to get fast performance.
 
 Example of roles:
 
@@ -100,7 +94,7 @@ Gives:
 ![staff.png](images%2Fstaff.png)
 
 
-###Custom-properties for managing groups in the works.    
+### Custom-properties for managing groups in the works.    
 Same general idea but have the property_names table use an id for primary and fk so that group names can change.   
 Add a group_admin column in the user_properties table for individual group admin in addition to an over all group admin role.  
 Don't support app_metadata reflection as large jwt's can cause session and performance issues as well cookie size problems.
