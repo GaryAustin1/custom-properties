@@ -15,7 +15,7 @@ INSERT INTO user_roles.custom_role_names (role_name) VALUES
 CREATE TABLE user_roles.custom_user_roles (
                                             user_id UUID not null,
                                             role text ,
-                                            constraint fk_rolename foreign key (role) references custom_role_names(role_name) on update cascade on delete cascade,
+                                            constraint fk_rolename foreign key (role) references user_roles.custom_role_names(role_name) on update cascade on delete cascade,
                                             constraint fk_user foreign key (user_id) references auth.users(id) on delete cascade, --  If you have a profile table you can link to that instead
                                             primary key (user_id,role)
 );
@@ -98,5 +98,5 @@ CREATE policy "RoleAdmin can do all operations"
     ON user_roles.custom_user_roles
     FOR all
     TO authenticated
-    USING ((select user_has_role('RoleAdmin')));
+    USING ((select user_roles.user_has_role('RoleAdmin')));
 
