@@ -74,8 +74,8 @@ begin
     if (TG_OP = 'DELETE')  then _id = old.user_id;
     else _id = new.user_id;
     end if;
-    select array_agg(role) into _roles from custom_user_roles where user_id = new.user_id;
-    update auth.users set raw_app_meta_data = raw_app_meta_data || json_build_object('user_roles', _roles)::jsonb where id = new.user_id;
+    select array_agg(role) into _roles from custom_user_roles where user_id = _id;
+    update auth.users set raw_app_meta_data = raw_app_meta_data || json_build_object('user_roles', _roles)::jsonb where id = _id;
     return new;
 end;
 $$;

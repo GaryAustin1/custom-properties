@@ -79,8 +79,8 @@ begin
     if (TG_OP = 'DELETE')  then _id = old.user_id;
     else _id = new.user_id;
     end if;
-    select array_agg(property) into _properties from @extschema@.user_properties where user_id = new.user_id;
-    update auth.users set raw_app_meta_data = raw_app_meta_data || json_build_object('@extschema@', _properties)::jsonb where id = new.user_id;
+    select array_agg(property) into _properties from @extschema@.user_properties where user_id = _id;
+    update auth.users set raw_app_meta_data = raw_app_meta_data || json_build_object('@extschema@', _properties)::jsonb where id = _id;
     return new;
 end;
 $$;
